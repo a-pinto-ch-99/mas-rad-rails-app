@@ -2,28 +2,39 @@
 
 <%= render 'form' %>
 
-<table>
+<table id='todos'>
   <thead>
     <tr>
+      <th colspan="1"></th>
       <th>Title</th>
-      <th>Completed</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @todos.each do |todo| %>
-      <tr>
-        <td><%= todo.title %></td>
-        <td><%= todo.completed %></td>
-        <td><%= link_to 'Show', todo %></td>
+      <tr <%= 'class=completed' if todo.completed? %>>
+        <td>   
+          <% if todo.completed? %>
+            <% myText = "mark as active" %>
+            <% myValue = false %>
+          <% else %>
+            <% myText = "mark as completed" %>
+            <% myValue = true %>
+          <% end %>   
+          <%= form_for(todo) do |f| %>
+          <%= f.hidden_field :completed, value: myValue %>
+            <%= f.submit myText %>
+          <% end %>
+        </td>
+        <td><span><%= todo.title %></span></td>
         <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
         <td><%= link_to 'Destroy', todo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<p><%= "#{@todos.active.count} item(s) left" %></p>
 <br>
 
 <%= link_to 'All', root_path %>

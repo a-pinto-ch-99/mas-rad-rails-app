@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'todos#index'
 
   get '/:scope' => 'todos#index', constraints: { scope: /active|completed/ }, as: :scoped_todos 
-  resources :todos
+  resources :todos, except: :show
   
   
   # The priority is based upon order of creation: first created -> highest priority.
